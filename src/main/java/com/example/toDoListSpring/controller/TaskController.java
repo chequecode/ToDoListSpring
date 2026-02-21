@@ -6,6 +6,8 @@ import com.example.toDoListSpring.service.TaskService;
 import com.example.toDoListSpring.dto.TaskDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +21,8 @@ public class TaskController {
     private final TaskService taskService;
 
     @GetMapping("/by-status/{status}")
-    public List<TaskDTO> getTasksByStatus(@PathVariable("status") TaskStatus status) {
-        return taskService.getTasksByStatus(status);
+    public Page<TaskDTO> getTasksByStatus(Pageable pageable, @PathVariable("status") TaskStatus status) {
+        return taskService.getTasksByStatus(pageable, status);
     }
 
     @GetMapping("/{id}")
@@ -35,8 +37,8 @@ public class TaskController {
     }
 
     @GetMapping
-    public List<TaskDTO> getAllTasks() {
-        return taskService.getAllTasks();
+    public Page<TaskDTO> getAllTasks(Pageable pageable) {
+        return taskService.getAllTasks(pageable);
     }
 
     @PostMapping

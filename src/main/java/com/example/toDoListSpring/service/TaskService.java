@@ -8,10 +8,10 @@ import com.example.toDoListSpring.exception.AlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import com.example.toDoListSpring.mapper.TaskMapper;
 import org.apache.kafka.common.errors.ResourceNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.example.toDoListSpring.repository.TaskRepository;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -20,8 +20,8 @@ public class TaskService {
     private final TaskRepository taskRepository;
     private final TaskMapper taskMapper;
 
-    public List<TaskDTO> getAllTasks() {
-        return taskMapper.toDtoList(taskRepository.findAll());
+    public Page<TaskDTO> getAllTasks(Pageable pageable) {
+        return taskRepository.findAll(pageable).map(taskMapper::toDTO);
     }
 
     public TaskDTO getTaskById(Long id) {
@@ -30,8 +30,8 @@ public class TaskService {
         return taskMapper.toDTO(task);
     }
 
-    public List<TaskDTO> getTasksByStatus(TaskStatus status) {
-        return taskMapper.toDtoList(taskRepository.findByStatus(status));
+    public Page<TaskDTO> getTasksByStatus(Pageable pageable, TaskStatus status) {
+        return taskRepository.findByStatus(pageable, status).map(taskMapper::toDTO);
     }
 
     public TaskDTO createTask(TaskDTO inDTO) {
