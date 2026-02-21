@@ -5,9 +5,9 @@ import com.example.toDoListSpring.dto.TaskUpdateDTO;
 import com.example.toDoListSpring.entity.Task;
 import com.example.toDoListSpring.entity.TaskStatus;
 import com.example.toDoListSpring.exception.AlreadyExistsException;
+import com.example.toDoListSpring.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import com.example.toDoListSpring.mapper.TaskMapper;
-import org.apache.kafka.common.errors.ResourceNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -36,7 +36,7 @@ public class TaskService {
 
     public TaskDTO createTask(TaskDTO inDTO) {
         if (taskRepository.existsByName(inDTO.getName())) {
-            throw new AlreadyExistsException("this task already exists");
+            throw new AlreadyExistsException("эта задача уже существует: " + inDTO.getName());
         }
         Task task = taskRepository.save(taskMapper.toEntity(inDTO));
         return taskMapper.toDTO(task);
