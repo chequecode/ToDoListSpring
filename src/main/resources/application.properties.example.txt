@@ -1,0 +1,7 @@
+spring.application.name=toDoListSpring
+
+spring.datasource.url=your_db_url
+spring.datasource.username=your_username
+spring.datasource.password=your_password
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
